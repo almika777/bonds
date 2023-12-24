@@ -1,0 +1,44 @@
+﻿@model RegisterModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+<div class="d-flex justify-content-start row">
+    <form asp-antiforgery="true" asp-controller="Register" asp-action="Register" method="post" class="col-6">
+        <input name="__RequestVerificationToken" type="hidden">
+
+        <input asp-for="Email" type="email" class="form-control mb-2" name="email" placeholder="Email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+
+        <input asp-for="Password" type="password" class="form-control mb-2" name="password" placeholder="Пароль">
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+        <input asp-for="PasswordVerify" type="password" class="form-control mb-2" name="passwordVerify" placeholder="Подтвердите пароль">
+        <span asp-validation-for="PasswordVerify" class="text-danger"></span>
+
+        <div class="mb-3 form-check" onclick="showPassword()">
+            <input type="checkbox" class="form-check-input" id="showPasswordCheckbox">
+            <label class="form-check-label">Показать пароль</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Готово</button>
+    </form>
+</div>
+
+<script>
+    function showPassword() {
+        var password = document.getElementById("password");
+        var passwordVerify = document.getElementById("passwordVerify");
+        var check = document.getElementById("showPasswordCheckbox");
+
+        if (password.type === "password") {
+            passwordVerify.type = "text";
+            password.type = "text";
+
+            check.checked = true;
+        } else {
+            password.type = "password";
+            passwordVerify.type = "password";
+            check.checked = false;
+        }
+    }
+</script>
