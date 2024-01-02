@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bonds.Common\Bonds.Common.csproj" />
+    <ProjectReference Include="..\Bonds.Database\Bonds.Database.csproj" />
+  </ItemGroup>
+
 </Project>

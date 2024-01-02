@@ -1,3 +1,6 @@
+using Bonds.Database;
+using Bonds.Database.Extensions;
+
 namespace Bonds.App
 {
     public class Program
@@ -8,7 +11,7 @@ namespace Bonds.App
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddDatabase(builder.Configuration);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -29,7 +32,14 @@ namespace Bonds.App
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
 
+                var context = services.GetRequiredService<BondsContext>();
+                context.Database.EnsureCreated();
+                // DbInitializer.Initialize(context);
+            }
             app.Run();
         }
     }
