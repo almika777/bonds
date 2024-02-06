@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bonds.Core\Bonds.Core.csproj" />
     <ProjectReference Include="..\Bonds.Database\Bonds.Database.csproj" />
   </ItemGroup>
 

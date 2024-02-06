@@ -36,11 +36,7 @@ namespace Bonds.Core.Services
 
         private async Task<double> GetSimpleProfit(ProfitabilityDto model)
         {
-            var moexResponse = await _bondsDataClient.GetBondsInfo(model.Isin);
-            var bondData = MoexResponseDeserializer.Deserialize(moexResponse.Description.Data);
-            var nkd = GetNkd(bondData);
-            var daysToOffert = (bondData.BuybackDate - DatesHelper.GetMscNow()).Days;
-            var result = ((bondData.FaceValue + bondData.CouponValue) / (bondData.FaceValue + nkd) - 1) * 365 / daysToOffert * 100;
+
             return 1;
         }
 

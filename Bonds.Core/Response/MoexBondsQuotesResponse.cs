@@ -2,14 +2,12 @@
 
 namespace Bonds.Core.Response
 {
-    public class MoexBondsQuotesResponse
-    {
-        [JsonPropertyName("securities")]
-        public Securities Securities { get; set; }
-    }
 
-    public class Securities
+    public class MoexResponseObject
     {
+        [JsonPropertyName("metadata")]
+        public List<string> Metadata { get; set; }  
+        
         [JsonPropertyName("columns")]
         public List<string> Columns { get; set; }
 

@@ -15,11 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
+    <ProjectReference Include="..\Bonds.Common\Bonds.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bonds.Common\Bonds.Common.csproj" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>

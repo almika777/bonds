@@ -11,7 +11,7 @@ namespace Bonds.Common.Entities
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public bool IsVerified { get; set; }
-        public int Totp { get; set; }
+        public int? Totp { get; set; }
         public DateTime LastEnterDate { get; set; }
         public string Description { get; set; }
         public UserStatus Status { get; set; }

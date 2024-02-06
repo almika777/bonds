@@ -25,5 +25,15 @@ namespace Bonds.Core.Tests.Services
             result.Should().NotBeNull();
             result.Description.Data.Should().NotBeNullOrEmpty();
         }
+
+        [Test]
+        public async Task Test2()
+        {
+            var service = _services.GetRequiredService<IBondsDataClient>();
+
+            await service.GetBondsQuotes();
+
+
+        }
     }
 }

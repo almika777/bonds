@@ -1,3 +1,4 @@
+using Bonds.App.HostedServices;
 using Bonds.Database;
 using Bonds.Database.Extensions;
 
@@ -12,6 +13,8 @@ namespace Bonds.App
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDatabase(builder.Configuration);
+            builder.Services.AddHostedService<MoexDataReader>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

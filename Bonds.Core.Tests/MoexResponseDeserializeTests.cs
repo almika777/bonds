@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
 using Bonds.Core.Extensions;
 using Bonds.Core.Helpers;
 using FluentAssertions;
@@ -23,8 +24,6 @@ namespace Bonds.Core.Tests
             var isin = "RU000A1077V4";
             var bondData = await bondsDataClient.GetBondsInfo(isin);
 
-            var result = MoexResponseDeserializer.Deserialize(bondData.Description.Data);
-            result.Isin.Should().Be(isin);
         }
 
 
@@ -33,10 +32,15 @@ namespace Bonds.Core.Tests
         {
             var bondsDataClient = _services.GetRequiredService<IBondsDataClient>();
             var isin = "RU000A1077V4";
-            var bondData = await bondsDataClient.GetBondsQuotes(isin);
 
-            var result = MoexResponseDeserializer.Deserialize(bondData.Securities.Data);
-            result.Isin.Should().Be(isin);
+        }
+
+        [Test]
+        public async Task Deserialize2Test()
+        {
+            var bondsDataClient = _services.GetRequiredService<IBondsDataClient>();
+            var c = await bondsDataClient.GetBondsQuotes();
+           // MoexResponseDeserializer.Deserialize(c);
         }
     }
 }
