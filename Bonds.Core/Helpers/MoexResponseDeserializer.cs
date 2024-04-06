@@ -6,7 +6,7 @@ namespace Bonds.Core.Helpers
 {
     public class MoexResponseDeserializer
     {
-        public static List<T> Deserialize<T>(string? response)
+        public static List<T> DeserializeList<T>(string? response)
         {
             var objectResponse = JsonSerializer.Deserialize<Dictionary<string, object>>(response);
             var type = typeof(T);
@@ -18,7 +18,7 @@ namespace Bonds.Core.Helpers
             {
                 var entity = Activator.CreateInstance<T>();
 
-                var splitedData = x.ToString().Split(',');
+                var splitedData = x.ToString().Replace("[",string.Empty).Replace("]", string.Empty).Split(',');
                 foreach (var propertyInfo in properties)
                 {
                     var responsePropertyName = propertyInfo.CustomAttributes
@@ -54,6 +54,7 @@ namespace Bonds.Core.Helpers
                     not null when convertType == typeof(long) => Convert.ToInt64(stringValue),
                     not null when convertType == typeof(bool) => stringValue.Equals("A"),
                     not null when convertType == typeof(DateTime) => GetDate(stringValue),
+                    not null when convertType == typeof(DateTimeOffset) => GetDateOffset(stringValue),
                     _ => throw new Exception()
                 };
             }
@@ -64,10 +65,10 @@ namespace Bonds.Core.Helpers
             }
 
 
+            object? GetDateOffset(string stringValue)
+                => DateTimeOffset.TryParse(stringValue, out var date) ? date : null;
             object? GetDate(string stringValue)
-                => DateTime.TryParseExact(stringValue, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date)
-                    ? date
-                    : null;
+                => DateTime.TryParse(stringValue, out var date) ? date : null;
         }
     }
 }

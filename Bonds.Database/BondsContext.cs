@@ -1,4 +1,4 @@
-﻿using Bonds.Common.Entities;
+﻿using Bonds.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bonds.Database
@@ -9,12 +9,14 @@ namespace Bonds.Database
         {
             
         }
-        public DbSet<UserEntity> Users { get; set; }
+        public DbSet<BondQuoteEntity> BondQuotes { get; set; }
+        public DbSet<BondTradeEntity> BondTrades { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserEntity>().ToTable("Users");
+            modelBuilder.Entity<BondQuoteEntity>().ToTable("BondQuotes");
+            modelBuilder.Entity<BondTradeEntity>().ToTable("BondTrades");
         }
     }
 }

@@ -14,13 +14,13 @@ namespace Bonds.Core.Tests
         [SetUp]
         public void Setup()
         {
-            _services = new ServiceCollection().AddCoreServices().BuildServiceProvider();
+            _services = new ServiceCollection().AddCoreServices(null).BuildServiceProvider();
         }
 
         [Test]
         public async Task DeserializeTest()
         {
-            var bondsDataClient = _services.GetRequiredService<IBondsDataClient>();
+            var bondsDataClient = _services.GetRequiredService<IMoexHttpDataClient>();
             var isin = "RU000A1077V4";
             var bondData = await bondsDataClient.GetBondsInfo(isin);
 
@@ -30,7 +30,7 @@ namespace Bonds.Core.Tests
         [Test]
         public async Task Deserialize1Test()
         {
-            var bondsDataClient = _services.GetRequiredService<IBondsDataClient>();
+            var bondsDataClient = _services.GetRequiredService<IMoexHttpDataClient>();
             var isin = "RU000A1077V4";
 
         }
@@ -38,8 +38,8 @@ namespace Bonds.Core.Tests
         [Test]
         public async Task Deserialize2Test()
         {
-            var bondsDataClient = _services.GetRequiredService<IBondsDataClient>();
-            var c = await bondsDataClient.GetBondsQuotes();
+            var bondsDataClient = _services.GetRequiredService<IMoexHttpDataClient>();
+            var c1 = await bondsDataClient.GetBondsTrades("RU000A107P62");
            // MoexResponseDeserializer.Deserialize(c);
         }
     }
