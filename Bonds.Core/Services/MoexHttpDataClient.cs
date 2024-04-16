@@ -1,6 +1,9 @@
 ﻿using Bonds.Core.Response;
 using Bonds.Core.Services.Interfaces;
 using System.Text.Json;
+using Bonds.Common;
+using Bonds.Common.Enums;
+using Bonds.Core.Dto;
 using Bonds.Core.Helpers;
 
 namespace Bonds.Core.Services
@@ -14,7 +17,7 @@ namespace Bonds.Core.Services
             _client = httpClientFactory.CreateClient("moex");
         }
 
-        public async Task<MoexBondsInfoResponse> GetBondsInfo(string isin)
+        public async Task<MoexBondsInfoResponse?> GetBondsInfo(string isin)
         {
             var response = await _client.GetAsync($"securities/{isin}.json");
             var stringResponse = await response.Content.ReadAsStreamAsync();
@@ -42,5 +45,6 @@ namespace Bonds.Core.Services
             var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
             return MoexResponseDeserializer.DeserializeList<BondsTradeResponse>(data["trades"].ToString());
         }
+
     }
 }

@@ -1,5 +1,6 @@
-
 using Bonds.App.Api.Extensions;
+using Bonds.Core.Extensions;
+using Bonds.DataProvider.Extensions;
 
 namespace Bonds.App.Api
 {
@@ -15,6 +16,8 @@ namespace Bonds.App.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddApplicationOptions(builder.Configuration);
+            builder.Services.AddDataProvider();
+            builder.Services.AddCoreServices();
 
             var app = builder.Build();
 

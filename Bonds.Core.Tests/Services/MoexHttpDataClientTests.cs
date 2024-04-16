@@ -41,7 +41,7 @@ namespace Bonds.Core.Tests.Services
         {
             var service = _services.GetRequiredService<IMoexHttpDataClient>();
 
-            var response = await service.GetBondsTrades("RU000A107UU5");
+            var response = await service.GetBondsTrades("RU000A106WZ2");
 
 
         }

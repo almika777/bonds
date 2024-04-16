@@ -16,6 +16,7 @@ namespace Bonds.Core.Extensions
                 httpClient.BaseAddress = new Uri("https://iss.moex.com/iss/");
             });
             services.AddScoped<IMoexHttpDataClient, MoexHttpDataClient>();
+            services.AddScoped<IBondsEventProviderService, BondsEventProviderService>();
             var bb = config?.GetSection("ConnectionStrings");
             return services;
         }
