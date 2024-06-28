@@ -18,15 +18,19 @@ namespace Bonds.Core.Helpers
             {
                 var entity = Activator.CreateInstance<T>();
 
-                var splitedData = x.ToString().Replace("[",string.Empty).Replace("]", string.Empty).Split(',');
+                var splitedData = x.ToString().Replace("[", string.Empty).Replace("]", string.Empty).Split(',');
                 foreach (var propertyInfo in properties)
                 {
                     var responsePropertyName = propertyInfo.CustomAttributes
                         .FirstOrDefault(x => x.AttributeType == typeof(JsonPropertyNameAttribute))
                         ?.ConstructorArguments.First().Value as string;
 
-                    var column = columns?.FirstOrDefault(x => x.Contains(responsePropertyName));
+                    var column = columns?.FirstOrDefault(x => x.Contains(responsePropertyName, StringComparison.InvariantCultureIgnoreCase));
                     var columnIndex = columns.IndexOf(column);
+
+                    if (columnIndex >= splitedData.Length || columnIndex < 0)
+                        continue;
+
                     var stringValue = splitedData[columnIndex].Trim();
                     var convertType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
                     var value = GetValue(stringValue, convertType);

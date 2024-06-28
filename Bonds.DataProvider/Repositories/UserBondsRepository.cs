@@ -17,9 +17,6 @@ namespace Bonds.DataProvider.Repositories
         {
             return new UserProfileModel
             {
-                ISINs = _options.ISINs,
-                DifferencePercentMinus = _options.DifferencePercentMinus,
-                DifferencePercentPlus = _options.DifferencePercentPlus
             };
         }
     }

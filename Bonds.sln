@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bonds.Common", "Bonds.Commo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bonds.App.Api", "Bonds.App.Api\Bonds.App.Api.csproj", "{8C481BBE-77BC-4602-8BA4-A3B246B1A9D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bonds.DataProvider", "Bonds.DataProvider\Bonds.DataProvider.csproj", "{F136B687-B676-4DBE-B0B2-3701F3030420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bonds.DataProvider", "Bonds.DataProvider\Bonds.DataProvider.csproj", "{F136B687-B676-4DBE-B0B2-3701F3030420}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

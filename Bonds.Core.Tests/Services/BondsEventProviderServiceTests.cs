@@ -18,7 +18,7 @@ namespace Bonds.Core.Tests.Services
         [SetUp]
         public void Setup()
         {
-            _services = new ServiceCollection().AddCoreServices(null).BuildServiceProvider();
+            _services = new ServiceCollection().AddCoreServices().BuildServiceProvider();
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace Bonds.Core.Tests.Services
         {
             var service = (BondsEventProviderService)_services.GetRequiredService<IBondsEventProviderService>();
 
-            var response = await service.GetBondsBuySellVolumes("RU000A106Q47");
+            var response = await service.GetBondsBuySellVolumes("RU000A1080y2");
 
 
         }

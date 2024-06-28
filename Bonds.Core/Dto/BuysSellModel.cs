@@ -1,14 +1,14 @@
-﻿using Bonds.Common.Enums;
-using Bonds.Core.Response;
+﻿using Bonds.Core.Response;
 
 namespace Bonds.Core.Dto
 {
-    public class BuysSellVolumes
+    public class BuysSellModel
     {
         /// <summary>
-        /// Направление сделки
+        /// Идентфиикатор облигации
         /// </summary>
-        public BuySell BuySell { get; set; }
+        public string ISIN { get; set; }
+
 
         /// <summary>
         /// Количество сделок

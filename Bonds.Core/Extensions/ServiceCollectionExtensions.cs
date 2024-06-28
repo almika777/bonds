@@ -1,24 +1,41 @@
-﻿using Bonds.Core.Services;
+﻿using Bonds.Core.Jobs;
+using Bonds.Core.Services;
 using Bonds.Core.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Telegram.BotAPI;
 
 namespace Bonds.Core.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration? config = null)
+        public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            var config1 = services.FirstOrDefault(x => x.ServiceType == typeof(IConfiguration));
             services.AddHttpClient("moex", httpClient =>
             {
                 httpClient.BaseAddress = new Uri("https://iss.moex.com/iss/");
             });
-            services.AddScoped<IMoexHttpDataClient, MoexHttpDataClient>();
-            services.AddScoped<IBondsEventProviderService, BondsEventProviderService>();
-            var bb = config?.GetSection("ConnectionStrings");
+
+            services.AddSingleton<IMoexHttpDataClient, MoexHttpDataClient>();
+            services.AddSingleton<IBondsEventProviderService, BondsEventProviderService>();
+            services.AddSingleton<ITelegramService, TelegramService>();
+            services.AddSingleton<ITelegramMessageService, TelegramMessageService>();
+            services.AddSingleton<ITcsService, TcsService>();
+            services.AddSingleton<INotifyGetter, NotifyGetter>();
+            services.AddSingleton<MoexTradesReader>();
+
+            services.AddMemoryCache();
             return services;
+        }
+
+        public static IServiceCollection AddTelegram(this IServiceCollection services, IConfiguration config)
+        {
+            return services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(config["TelegramBotToken"]));
+        }        
+        
+        public static IServiceCollection AddTinkoff(this IServiceCollection services, IConfiguration config)
+        {
+            return services.AddInvestApiClient((_, settings) => settings.AccessToken = config["TinkoffToken"]);
         }
     }
 }

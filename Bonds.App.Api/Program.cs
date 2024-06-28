@@ -1,4 +1,5 @@
 using Bonds.App.Api.Extensions;
+using Bonds.App.Api.HostedServices;
 using Bonds.Core.Extensions;
 using Bonds.DataProvider.Extensions;
 
@@ -12,28 +13,14 @@ namespace Bonds.App.Api
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
             builder.Services.AddApplicationOptions(builder.Configuration);
             builder.Services.AddDataProvider();
             builder.Services.AddCoreServices();
+            builder.Services.AddTelegram(builder.Configuration);
+            builder.Services.AddTinkoff(builder.Configuration);
+            builder.Services.AddHostedService<RecurringHostedService>();
 
             var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
 
             app.Run();
         }

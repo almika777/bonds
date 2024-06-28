@@ -12,7 +12,7 @@ namespace Bonds.Core.Tests.Services
         [SetUp]
         public void Setup()
         {
-            _services = new ServiceCollection().AddCoreServices(null).BuildServiceProvider();
+            _services = new ServiceCollection().AddCoreServices().BuildServiceProvider();
         }
 
         [Test]

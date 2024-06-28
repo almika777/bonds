@@ -1,40 +1,49 @@
-﻿using Bonds.Core.Dto;
+﻿using Bonds.Common.Options;
+using Bonds.Core.Dto;
 using Bonds.Core.Services.Interfaces;
-using Bonds.DataProvider.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Bonds.Core.Services
 {
     public class NotifyGetter : INotifyGetter
     {
-        private readonly IBondsEventProviderService _bondsEventProviderService;
-        private readonly IUserBondsRepository _userBondsRepository;
+        private readonly ITcsService _tcsService;
+        private readonly ILogger<NotifyGetter> _logger;
 
-        public NotifyGetter(IBondsEventProviderService bondsEventProviderService, IUserBondsRepository userBondsRepository)
+        public NotifyGetter(
+            ITcsService tcsService,
+            ILogger<NotifyGetter> logger)
         {
-            _bondsEventProviderService = bondsEventProviderService;
-            _userBondsRepository = userBondsRepository;
+            _logger = logger;
+            _tcsService = tcsService;
         }
 
         public async Task<List<NotifyModel>> GetNotifiesByUser(long userId)
         {
-            var userBonds = await _userBondsRepository.Get(userId);
-            var sellBuyModels = userBonds.ISINs
-                .Select(x => _bondsEventProviderService.GetBondsBuySellVolumes(x))
-                .ToList();
+            var bondsCandles = await _tcsService.GetProcessedBondsCandles();
 
-            await Task.WhenAll(sellBuyModels);
-            
-            foreach (var isin in userBonds.ISINs)
+            if (bondsCandles.Count < 1)
             {
-                var c = await _bondsEventProviderService.GetBondsBuySellVolumes(isin);
+                _logger.LogWarning("Нет бумаг с нужной разницей за день");
+                return Enumerable.Empty<NotifyModel>().ToList();
             }
 
+            var res = bondsCandles
+                .Select(x => new NotifyModel
+                {
+                    ISIN = x.ISIN,
+                    Name = x.Name,
+                    Url = _tcsService.GetUrl(x.ISIN),
+                    DifferencePercent = x.OpenCloseDifference,
+                    Min = x.Min,
+                    Max = x.Max,
+                }).ToList();
 
-            return null;
+
+            _logger.LogWarning($"Количество бумаг с разницей в Тинькофф: {res.Count}");
+
+            return res;
         }
     }
 
-    public interface INotifyGetter
-    {
-    }
 }

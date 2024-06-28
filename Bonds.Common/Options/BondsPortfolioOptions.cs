@@ -2,7 +2,7 @@
 
 public class BondsPortfolioOptions
 {
-    public string[] ISINs { get; set; }
-    public double DifferencePercentMinus { get; set; }
-    public double DifferencePercentPlus { get; set; }
+    public string[] ExcludeNames { get; set; }
+    public double DifferencePercent { get; set; }
+    public double MinCouponPercent { get; set; }
 }

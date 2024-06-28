@@ -28,7 +28,7 @@ namespace Bonds.Core.Services
         // список всех облигаций на мосбирже
         public async Task<List<BondsSecuritiesResponse>> GetAllBonds()
         {
-            var response = await _client.GetAsync($"engines/stock/markets/bonds/boards/TQCB/securities.json");
+            var response = await _client.GetAsync($"engines/stock/markets/bonds/securities.json");
 
             var stringResponse = await response.Content.ReadAsStreamAsync();
             var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
@@ -39,10 +39,13 @@ namespace Bonds.Core.Services
         //сделки по инструменту за сегодня
         public async Task<List<BondsTradeResponse>> GetBondsTrades(string isin)
         {
-            var response = await _client.GetAsync($"engines/stock/markets/bonds/securities/{isin}/trades.json");
+            Dictionary<string, object>? data;
 
-            var stringResponse = await response.Content.ReadAsStreamAsync();
-            var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
+            using var response = await _client.GetAsync($"engines/stock/markets/bonds/securities/{isin}/trades.json");
+            await using (var stringResponse = await response.Content.ReadAsStreamAsync())
+            {
+                data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
+            }
             return MoexResponseDeserializer.DeserializeList<BondsTradeResponse>(data["trades"].ToString());
         }
 
