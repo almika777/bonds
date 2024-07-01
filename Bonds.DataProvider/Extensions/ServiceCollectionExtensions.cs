@@ -1,5 +1,4 @@
-﻿using Bonds.DataProvider.Repositories;
-using Bonds.DataProvider.Repositories.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +8,13 @@ namespace Bonds.DataProvider.Extensions
     {
         public static IServiceCollection AddDataProvider(this IServiceCollection services, IConfiguration? config = null)
         {
-            services.AddScoped<IUserBondsRepository, UserBondsRepository>();
+            services.AddDbContextFactory<BondsContext>(x =>
+            {
+                var folder = Environment.SpecialFolder.LocalApplicationData;
+                var path = Environment.GetFolderPath(folder);
+                var dbPath = Path.Join(path, "bonds.db");
+                x.UseSqlite($"Data Source={dbPath}");
+            });
             return services;
         }
     }

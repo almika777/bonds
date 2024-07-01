@@ -1,10 +1,7 @@
-﻿using Bonds.Core.Response;
+﻿using Bonds.Core.Helpers;
+using Bonds.Core.Response;
 using Bonds.Core.Services.Interfaces;
 using System.Text.Json;
-using Bonds.Common;
-using Bonds.Common.Enums;
-using Bonds.Core.Dto;
-using Bonds.Core.Helpers;
 
 namespace Bonds.Core.Services
 {

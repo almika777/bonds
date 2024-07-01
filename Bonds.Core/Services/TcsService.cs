@@ -41,7 +41,7 @@ namespace Bonds.Core.Services
         {
             var allBonds = await _moexHttpDataClient.GetAllBonds();
             var bondsWithGoodCoupon = allBonds
-                .Where(x => (x.CouponPercent > _options.MinCouponPercent || x.YieldAtPrevWAPrice > 24))
+                .Where(x => (x.CouponPercent > _options.MinCouponPercent || x.YieldAtPrevWaPrice > 24))
                 .ToList();
 
             var isinsWithGoodCoupons = bondsWithGoodCoupon.Select(x => x.ISIN);

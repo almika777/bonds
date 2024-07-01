@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bonds.App.Api", "Bonds.App.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bonds.DataProvider", "Bonds.DataProvider\Bonds.DataProvider.csproj", "{F136B687-B676-4DBE-B0B2-3701F3030420}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bonds.DataProvider.Tests", "Bonds.DataProvider.Tests\Bonds.DataProvider.Tests.csproj", "{F5CB6A74-3569-4161-BC79-53C969F2C34C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{F136B687-B676-4DBE-B0B2-3701F3030420}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F136B687-B676-4DBE-B0B2-3701F3030420}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F136B687-B676-4DBE-B0B2-3701F3030420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5CB6A74-3569-4161-BC79-53C969F2C34C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5CB6A74-3569-4161-BC79-53C969F2C34C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5CB6A74-3569-4161-BC79-53C969F2C34C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5CB6A74-3569-4161-BC79-53C969F2C34C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{92727D96-8A19-4A9E-8D2C-85D9E24F50B0} = {9002B147-D758-43E4-BAA7-34EC83E3A694}
 		{8C481BBE-77BC-4602-8BA4-A3B246B1A9D1} = {9002B147-D758-43E4-BAA7-34EC83E3A694}
 		{F136B687-B676-4DBE-B0B2-3701F3030420} = {9002B147-D758-43E4-BAA7-34EC83E3A694}
+		{F5CB6A74-3569-4161-BC79-53C969F2C34C} = {7D6F37CF-36BC-4F4B-9BAE-03204C556F2F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DCF274ED-AF10-41F3-AD7D-77531927095F}
