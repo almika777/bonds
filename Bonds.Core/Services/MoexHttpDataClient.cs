@@ -31,6 +31,16 @@ namespace Bonds.Core.Services
             var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
             return MoexResponseDeserializer.DeserializeList<BondsSecuritiesResponse>(data["securities"].ToString());
         }
+        
+        // список всех облигаций на мосбирже
+        public async Task<List<BondsMarketdataResponse>> GetAllBondsMarketdata()
+        {
+            var response = await _client.GetAsync($"engines/stock/markets/bonds/securities.json");
+
+            var stringResponse = await response.Content.ReadAsStreamAsync();
+            var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
+            return MoexResponseDeserializer.DeserializeList<BondsMarketdataResponse>(data["marketdata"].ToString());
+        }
 
         //https://iss.moex.com/iss/engines/stock/markets/bonds/securities/{ISIN}/trades
         //сделки по инструменту за сегодня

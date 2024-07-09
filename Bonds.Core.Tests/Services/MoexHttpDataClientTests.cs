@@ -32,8 +32,14 @@ namespace Bonds.Core.Tests.Services
             var service = _services.GetRequiredService<IMoexHttpDataClient>();
 
             var response = await service.GetAllBonds();
+        }        
+        
+        [Test]
+        public async Task GetAllBondsMarketdataTest()
+        {
+            var service = _services.GetRequiredService<IMoexHttpDataClient>();
 
-
+            var response = await service.GetAllBondsMarketdata();
         }
 
         [Test]
@@ -42,8 +48,6 @@ namespace Bonds.Core.Tests.Services
             var service = _services.GetRequiredService<IMoexHttpDataClient>();
 
             var response = await service.GetBondsTrades("RU000A106WZ2");
-
-
         }
     }
 }
