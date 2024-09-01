@@ -1,7 +1,6 @@
 ﻿using Bonds.Core.Services.Interfaces;
 using Telegram.BotAPI;
 using Telegram.BotAPI.AvailableMethods;
-using Telegram.BotAPI.AvailableTypes;
 
 namespace Bonds.Core.Services
 {

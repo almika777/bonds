@@ -1,22 +1,19 @@
 ﻿using Bonds.Core.Dto;
 using Bonds.Core.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using System.Text;
 
 namespace Bonds.Core.Services
 {
     public class TelegramMessageService : ITelegramMessageService
     {
-        private TimeSpan LifeTime => TimeSpan.FromMinutes(int.Parse(_config["JobDelayMinutes"]) + 5);
+        private TimeSpan LifeTime => TimeSpan.FromMinutes(15);
 
         private readonly IMemoryCache _cache;
-        private readonly IConfiguration _config;
 
-        public TelegramMessageService(IMemoryCache cache, IConfiguration config)
+        public TelegramMessageService(IMemoryCache cache)
         {
             _cache = cache;
-            _config = config;
         }
 
         public List<string> BuildBondsMessage(List<NotifyModel> notifies)

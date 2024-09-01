@@ -1,15 +1,19 @@
-﻿namespace Bonds.Core.Results
+﻿using System.Text.Json.Serialization;
+
+namespace Bonds.Core.Results
 {
     public class BondInfo
     {
         /// <summary>
         /// Код ценной бумаги
         /// </summary>
+        [JsonPropertyName("secid")]
         public string SecId { get; set; }
 
         /// <summary>
         /// Код облигации
         /// </summary>
+        [JsonPropertyName("isin")]
         public string Isin { get; set; }
 
 		/// <summary>
@@ -66,6 +70,12 @@
         /// Периодичность выплаты купона в год
         /// </summary>
         public int CouponFrequency { get; set; }
+
+        /// <summary>
+        /// Периодичность выплаты купона в год
+        /// </summary>
+        [JsonPropertyName("EMITTER_ID")]
+        public int EmitterId { get; set; }
 
   //       ["SECID", "Код ценной бумаги", "RU000A1077V4", "string", 1, 0, null],
 		// ["NAME", "Полное наименование", "РОСЭКСИМБАНК 002P-04", "string", 3, 0, null],

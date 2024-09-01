@@ -2,6 +2,8 @@
 using Bonds.Core.Response;
 using Bonds.Core.Services.Interfaces;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using Bonds.Core.Results;
 
 namespace Bonds.Core.Services
 {
@@ -14,12 +16,23 @@ namespace Bonds.Core.Services
             _client = httpClientFactory.CreateClient("moex");
         }
 
-        public async Task<MoexBondsInfoResponse?> GetBondsInfo(string isin)
+        public async Task<(string ISIN, long? EmmiterId)> GetBondEmitterId(string isin)
         {
             var response = await _client.GetAsync($"securities/{isin}.json");
             var stringResponse = await response.Content.ReadAsStreamAsync();
+            var data = await JsonSerializer.DeserializeAsync<Dictionary<string, Dictionary<string, object>>>(stringResponse);
+            var rows = JsonSerializer.Deserialize<JsonElement>(data["description"]["data"].ToString()!).EnumerateArray()
+                    .Select(z => z.ToString())
+                    .ToList();
+            var row = rows.FirstOrDefault(x => x.Contains("emitter_id", StringComparison.InvariantCultureIgnoreCase));
 
-            return await JsonSerializer.DeserializeAsync<MoexBondsInfoResponse>(stringResponse);
+            if (row == null)
+                return (null, null);
+
+            var result = JsonSerializer.Deserialize<JsonArray>(row)?[2]?.ToString();
+            return long.TryParse(result, out var id)
+                ? (isin,id)
+                : (null, null);
         }
 
         // список всех облигаций на мосбирже
@@ -31,11 +44,11 @@ namespace Bonds.Core.Services
             var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
             return MoexResponseDeserializer.DeserializeList<BondsSecuritiesResponse>(data["securities"].ToString());
         }
-        
-        // список всех облигаций на мосбирже
+
+        // список всех облигаций на мосбирже XS0114288789
         public async Task<List<BondsMarketdataResponse>> GetAllBondsMarketdata()
         {
-            var response = await _client.GetAsync($"engines/stock/markets/bonds/securities.json");
+            var response = await _client.GetAsync($"engines/stock/markets/bonds/securities.json?marketprice_board=1");
 
             var stringResponse = await response.Content.ReadAsStreamAsync();
             var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);

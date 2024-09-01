@@ -20,22 +20,13 @@ namespace Bonds.Core.Extensions
             services.AddSingleton<IBondsEventProviderService, BondsEventProviderService>();
             services.AddSingleton<ITelegramService, TelegramService>();
             services.AddSingleton<ITelegramMessageService, TelegramMessageService>();
-            services.AddSingleton<ITcsService, TcsService>();
-            services.AddSingleton<INotifyGetter, NotifyGetter>();
-            services.AddSingleton<MoexTradesReader>();
 
-            services.AddMemoryCache();
             return services;
         }
 
         public static IServiceCollection AddTelegram(this IServiceCollection services, IConfiguration config)
         {
             return services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(config["TelegramBotToken"]));
-        }        
-        
-        public static IServiceCollection AddTinkoff(this IServiceCollection services, IConfiguration config)
-        {
-            return services.AddInvestApiClient((_, settings) => settings.AccessToken = config["TinkoffToken"]);
         }
     }
 }

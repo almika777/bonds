@@ -6,7 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>4d769259-62d4-4739-97e2-9a1887585b19</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="HostedServices\**" />
+    <Content Remove="HostedServices\**" />
+    <EmbeddedResource Remove="HostedServices\**" />
+    <None Remove="HostedServices\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Hangfire" Version="1.8.14" />

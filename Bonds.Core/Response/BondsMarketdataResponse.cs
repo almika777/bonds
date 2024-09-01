@@ -8,7 +8,7 @@ namespace Bonds.Core.Response
         /// Международный идентификационный код ценной бумаги
         /// </summary>
         [JsonPropertyName("secid")]
-        public string? ISIN { get; set; }
+        public string ISIN { get; set; }
 
         /// <summary>
         /// Лучшая котировка на покупку
@@ -104,20 +104,20 @@ namespace Bonds.Core.Response
         /// Количество сделок за торговый день
         /// </summary>
         [JsonPropertyName("NUMTRADES")]
-        public double TradesCount { get; set; }
+        public long TradesCount { get; set; }
 
 
         /// <summary>
         /// Объем совершенных сделок, выраженный в единицах ценных бумаг
         /// </summary>
         [JsonPropertyName("VOLTODAY")]
-        public double VolToday { get; set; }
+        public long VolToday { get; set; }
 
         /// <summary>
         /// Объем совершенных сделок, выраженный в валюте расчетов
         /// </summary>
         [JsonPropertyName("VALTODAY")]
-        public double ValToday { get; set; }       
+        public long ValToday { get; set; }       
         
         /// <summary>
         /// Дата изменения
@@ -141,6 +141,12 @@ namespace Bonds.Core.Response
         /// Доходность купона
         /// </summary>
         [JsonPropertyName("YIELDLASTCOUPON")]
-        public double YieldLastCoupon { get; set; }
+        public double YieldLastCoupon { get; set; }       
+        
+        /// <summary>
+        /// Доходность купона
+        /// </summary>
+        [JsonPropertyName("SEQNUM")]
+        public double SeqNum { get; set; }
     }
 }

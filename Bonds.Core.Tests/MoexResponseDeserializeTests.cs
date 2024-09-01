@@ -17,15 +17,6 @@ namespace Bonds.Core.Tests
             _services = new ServiceCollection().AddCoreServices().BuildServiceProvider();
         }
 
-        [Test]
-        public async Task DeserializeTest()
-        {
-            var bondsDataClient = _services.GetRequiredService<IMoexHttpDataClient>();
-            var isin = "RU000A1077V4";
-            var bondData = await bondsDataClient.GetBondsInfo(isin);
-
-        }
-
 
         [Test]
         public async Task Deserialize1Test()
@@ -33,6 +24,18 @@ namespace Bonds.Core.Tests
             var bondsDataClient = _services.GetRequiredService<IMoexHttpDataClient>();
             var isin = "RU000A1077V4";
 
+        }
+        //TODO Написать нормальные тесты
+        [Test]
+        [TestCase("RU000A1077V4", 536)]
+        [TestCase("RU000A0NTYB5", 269)]
+        [TestCase("RU000A0NTYB9", null)]
+        public async Task should_GetBondEmitterId_parse(string isin, long? emitterId)
+        {
+            var bondsDataClient = _services.GetRequiredService<IMoexHttpDataClient>();
+            var res = await bondsDataClient.GetBondEmitterId(isin);
+
+            res.EmmiterId.Should().Be(emitterId);
         }
 
         [Test]

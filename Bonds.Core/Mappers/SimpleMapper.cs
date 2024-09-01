@@ -1,15 +1,13 @@
-﻿using Bonds.Core.Response;
-using Bonds.DataProvider.Entities;
-using Nelibur.ObjectMapper;
+﻿
+using AutoMapper;
 
 namespace Bonds.Core.Mappers
 {
-    public class SimpleMapper
+    public class SimpleMapper : Profile
     {
         public SimpleMapper()
         {
-            TinyMapper.Bind<BondsSecuritiesResponse, BondEntity>();
-            TinyMapper.Bind<BondEntity, BondsSecuritiesResponse>();
+            
         }
     }
 }

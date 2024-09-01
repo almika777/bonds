@@ -6,14 +6,13 @@ namespace Bonds.DataProvider.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddDataProvider(this IServiceCollection services, IConfiguration? config = null)
+        public static IServiceCollection AddDataProvider(this IServiceCollection services, IConfiguration? config)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             services.AddDbContextFactory<BondsContext>(x =>
             {
-                var folder = Environment.SpecialFolder.LocalApplicationData;
-                var path = Environment.GetFolderPath(folder);
-                var dbPath = Path.Join(path, "bonds.db");
-                x.UseSqlite($"Data Source={dbPath}");
+                x.UseNpgsql(config.GetConnectionString("Bonds"));
             });
             return services;
         }

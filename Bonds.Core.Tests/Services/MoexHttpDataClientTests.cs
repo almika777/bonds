@@ -15,16 +15,6 @@ namespace Bonds.Core.Tests.Services
             _services = new ServiceCollection().AddCoreServices().BuildServiceProvider();
         }
 
-        [Test]
-        public async Task GetBondsInfoTest()
-        {
-            var service = _services.GetRequiredService<IMoexHttpDataClient>();
-
-            var result = await service.GetBondsInfo("RU000A1077V4");
-
-            result.Should().NotBeNull();
-            result.Description.Data.Should().NotBeNullOrEmpty();
-        }
 
         [Test]
         public async Task GetAllBondsTest()

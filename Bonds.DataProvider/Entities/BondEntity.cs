@@ -1,109 +1,133 @@
-﻿namespace Bonds.DataProvider.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Bonds.DataProvider.Entities
 {
     public class BondEntity
     {
-        public int Id { get; set; }
 
         /// <summary>
         /// Международный идентификационный код ценной бумаги
         /// </summary>
-        public string? ISIN { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string ISIN { get; set; }
 
         /// <summary>
-        /// Краткое наименование бумаги
+        /// Лучшая котировка на покупку
         /// </summary>
-        public string? ShortName { get; set; }
+        public double? Bid { get; set; }
 
         /// <summary>
-        /// Значение оценки предыдущего торгового дня
+        /// Лучшая котировка на продажу
         /// </summary>
-        public double? PrevWaPrice { get; set; }
+        public double? Ask { get; set; }
 
         /// <summary>
-        /// Доходность по оценке предыдущего торгового дня
+        /// Разница в цене, между продажей и покупкой инструмента
         /// </summary>
-        public double? YieldAtPrevWaPrice { get; set; }
+        public double? Spread { get; set; }
 
         /// <summary>
-        /// Величина купона, выраженная в руб
+        /// Цена первой сделки
         /// </summary>
-        public double? CouponValue { get; set; }
+        public double Open { get; set; }
 
         /// <summary>
-        /// Дата окончания купона
+        /// Минимальная цена сделки
         /// </summary>
-        public DateTime? NextCouponDate { get; set; }
+        public double Low { get; set; }
 
         /// <summary>
-        /// Цена последней сделки предыдущего торгового дня
+        /// Максимальная цена сделки
         /// </summary>
-        public double? PrevPrice { get; set; }
+        public double High { get; set; }
 
         /// <summary>
-        /// Количество ценных бумаг в одном стандартном лоте
+        /// Цена последней сделки
         /// </summary>
-        public long? LotSize { get; set; }
+        public double Last { get; set; }
 
         /// <summary>
-        /// Номинальная стоимость одной ценной бумаги, в валюте инструмента
+        /// Объем последней сделки, в лотах
         /// </summary>
-        public double? FaceValue { get; set; }
+        public double Qty { get; set; }
 
         /// <summary>
-        /// Индикатор "торговые операции разрешены/запрещены"
+        /// Объем последней сделки, выраженный в валюте расчетов
         /// </summary>
-        public bool? Status { get; set; }
+        public double Value { get; set; }
 
         /// <summary>
-        /// Дата погашения
+        /// Доходность, рассчитанная по цене сделки
         /// </summary>
-        public DateTime? MatDate { get; set; }
+        public double Yield { get; set; }
 
         /// <summary>
-        /// Длительность купона, выраженная в днях
+        /// Средневзвешенная цена
         /// </summary>
-        public int? CouponPeriod { get; set; }
+        public double WaPrice { get; set; }
 
         /// <summary>
-        /// Объём выпуска
+        /// Доходность по средневзвешенной цене
         /// </summary>
-        public long? IssueSize { get; set; }
+        public double YieldAtWaPrice { get; set; }
 
         /// <summary>
-        /// Цена закрытия предыдущего дня
+        /// Размер купона
         /// </summary>
-        public double? PrevLegalClosePrice { get; set; }
+        public double CouponValue { get; set; }
 
         /// <summary>
-        /// Дата предыдущего торгового дня
+        /// Рыночная цена по результатам торгов сегодняшнего дня, за одну ценную бумагу
         /// </summary>
-        public DateTime? PrevDate { get; set; }
+        public double MarketPriceToday { get; set; }
 
         /// <summary>
-        /// Наименование финансового инструмента
+        /// Рыночная цена ценной бумаги по результатам торгов предыдущего дня, за одну ценную бумагу
         /// </summary>
-        public string? SecName { get; set; }
+        public double MarketPrice { get; set; }
 
         /// <summary>
-        /// Цена выкупа
+        /// Количество сделок за торговый день
         /// </summary>
-        public string? BuybackPrice { get; set; }
+        public double TradesCount { get; set; }
 
         /// <summary>
-        /// Дата, к которой рассчитывается доходность
+        /// Объем совершенных сделок, выраженный в единицах ценных бумаг
         /// </summary>
-        public DateTime? BuybackDate { get; set; }
+        public long VolToday { get; set; }
 
         /// <summary>
-        /// Наименование финансового инструмента на английском языке
+        /// Объем совершенных сделок, выраженный в валюте расчетов
         /// </summary>
-        public string? LatName { get; set; }
+        public long ValToday { get; set; }
 
         /// <summary>
-        /// Ставка купона, %
+        /// Дата изменения в MOEX
         /// </summary>
-        public double? CouponPercent { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime UpdateTime { get; set; }
+
+        /// <summary>
+        /// Изменение цены последней сделки по отношению к цене последней сделки предыдущего торгового
+        /// </summary>
+        public double Change { get; set; }
+
+        /// <summary>
+        /// Цена последней сделки к оценке предыдущего дня
+        /// </summary>
+        public double PriceMinusPrevWaPrice { get; set; }
+
+        /// <summary>
+        /// Доходность купона
+        /// </summary>
+        public double YieldLastCoupon { get; set; }
+
+        /// <summary>
+        /// Доходность купона
+        /// </summary>
+        public double SeqNum { get; set; }
+        public DateTime UpdatedDate { get; set; }
+
     }
 }

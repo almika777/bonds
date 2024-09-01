@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Bonds.Core.Helpers
@@ -13,22 +12,26 @@ namespace Bonds.Core.Helpers
             var properties = type.GetProperties();
             var columns = objectResponse["columns"].ToString()?.Split(',').ToList();
             var datas = JsonSerializer.Deserialize<List<object>>(objectResponse["data"].ToString());
+            var splitedData = new List<string>();
 
             return datas.Select(x =>
             {
                 var entity = Activator.CreateInstance<T>();
+                var doc = JsonSerializer.Deserialize<JsonElement>(x.ToString()!).EnumerateArray();
 
-                var splitedData = x.ToString().Replace("[", string.Empty).Replace("]", string.Empty).Split(',');
+                while (doc.MoveNext())
+                    splitedData.Add(doc.Current.GetRawText());
+
                 foreach (var propertyInfo in properties)
                 {
                     var responsePropertyName = propertyInfo.CustomAttributes
-                        .FirstOrDefault(x => x.AttributeType == typeof(JsonPropertyNameAttribute))
+                        .FirstOrDefault(z => z.AttributeType == typeof(JsonPropertyNameAttribute))
                         ?.ConstructorArguments.First().Value as string;
 
-                    var column = columns?.FirstOrDefault(x => x.Contains(responsePropertyName, StringComparison.InvariantCultureIgnoreCase));
+                    var column = columns?.FirstOrDefault(z => z.Contains(responsePropertyName, StringComparison.InvariantCultureIgnoreCase));
                     var columnIndex = columns.IndexOf(column);
 
-                    if (columnIndex >= splitedData.Length || columnIndex < 0)
+                    if (columnIndex >= splitedData.Count || columnIndex < 0)
                         continue;
 
                     var stringValue = splitedData[columnIndex].Trim();
@@ -38,6 +41,7 @@ namespace Bonds.Core.Helpers
                     propertyInfo.SetValue(entity, value);
                 }
 
+                splitedData.Clear();
                 return entity;
             }).ToList();
         }

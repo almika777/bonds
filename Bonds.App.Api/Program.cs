@@ -1,8 +1,10 @@
 using Bonds.App.Api.Extensions;
-using Bonds.App.Api.HostedServices;
+using Bonds.Common.Options;
 using Bonds.Core.Extensions;
 using Bonds.Core.Jobs;
+using Bonds.Core.Mappers;
 using Bonds.DataProvider.Extensions;
+using Google.Api;
 using Hangfire;
 using Hangfire.PostgreSql;
 
@@ -17,27 +19,39 @@ namespace Bonds.App.Api
             // Add services to the container.
 
             builder.Services.AddApplicationOptions(builder.Configuration);
-            builder.Services.AddDataProvider();
+            builder.Services.AddDataProvider(builder.Configuration);
             builder.Services.AddCoreServices();
             builder.Services.AddTelegram(builder.Configuration);
-            builder.Services.AddTinkoff(builder.Configuration);
-            builder.Services.AddHostedService<RecurringHostedService>();
             builder.Services.AddHangfire(x =>
             {
                 x.UseSimpleAssemblyNameTypeSerializer();
                 x.UseRecommendedSerializerSettings();
                 x.UsePostgreSqlStorage(x => x.UseNpgsqlConnection(builder.Configuration.GetConnectionString("Bonds")));
             });
+            builder.Services.AddHangfireServer();
+            builder.Services.AddMemoryCache();
+            builder.Services.AddAutoMapper(typeof(SimpleMapper));
             builder.Services.AddJobs();
 
             var app = builder.Build();
-
             app.UseHangfireDashboard();
-            app.UseHangfireServer();
 
-            RecurringJob.AddOrUpdate<IMoexBondInfoJob>(nameof(IMoexBondInfoJob), x => x.Execute(), Cron.Minutely);
+            RegisterJobs(app);
 
             app.Run();
+        }
+
+        private static void RegisterJobs(IHost app)
+        {
+            var jobs = app.Services.GetServices<IJob>();
+            foreach (var job in jobs)
+            {
+                var cron = app.Services.GetRequiredService<JobsOptions>();
+                var typeName = job.GetType().Name;
+
+                //RecurringJob.AddOrUpdate<IJob>(typeName, x => job.Execute(), cron.Settings[typeName].Cron);
+                RecurringJob.AddOrUpdate(typeName, () => job.Execute(), cron.Settings[typeName].Cron);
+            }
         }
     }
 }
