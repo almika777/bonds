@@ -37,6 +37,7 @@ namespace Bonds.App.Api
 
             var app = builder.Build();
             app.UseHangfireDashboard();
+            app.UseHttpsRedirection();
             RegisterJobs(app);
             using var scope = app.Services.CreateScope();
             scope.ServiceProvider.GetRequiredService<ITelegramClient>().Receive();
