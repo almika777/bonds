@@ -25,4 +25,4 @@ jobs:
         with:
           file: Bonds.App.Api/Dockerfile
           push: true
-          tags: user/app:latest
+          tags: almirok/bonds:latest
