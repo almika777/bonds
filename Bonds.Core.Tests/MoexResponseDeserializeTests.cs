@@ -33,9 +33,9 @@ namespace Bonds.Core.Tests
         public async Task should_GetBondEmitterId_parse(string isin, long? emitterId)
         {
             var bondsDataClient = _services.GetRequiredService<IMoexHttpDataClient>();
-            var res = await bondsDataClient.GetBondEmitterId(isin);
+            var res = await bondsDataClient.GetBondExtendedData(isin);
 
-            res.EmmiterId.Should().Be(emitterId);
+            res.EmitterId.Should().Be(emitterId);
         }
 
         [Test]

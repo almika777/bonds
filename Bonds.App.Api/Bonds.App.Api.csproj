@@ -32,6 +32,7 @@
     <ProjectReference Include="..\Bonds.Common\Bonds.Common.csproj" />
     <ProjectReference Include="..\Bonds.Core\Bonds.Core.csproj" />
     <ProjectReference Include="..\Bonds.DataProvider\Bonds.DataProvider.csproj" />
+    <ProjectReference Include="..\Bonds.Telegram\Bonds.Telegram.csproj" />
   </ItemGroup>
 
 </Project>

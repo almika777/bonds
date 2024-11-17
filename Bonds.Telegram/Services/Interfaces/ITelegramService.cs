@@ -1,4 +1,4 @@
-﻿namespace Bonds.Core.Services.Interfaces
+﻿namespace Bonds.Telegram.Services.Interfaces
 {
     public interface ITelegramService
     {

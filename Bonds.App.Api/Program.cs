@@ -4,7 +4,8 @@ using Bonds.Core.Extensions;
 using Bonds.Core.Jobs;
 using Bonds.Core.Mappers;
 using Bonds.DataProvider.Extensions;
-using Google.Api;
+using Bonds.Telegram.Extensions;
+using Bonds.Telegram.Services.Interfaces;
 using Hangfire;
 using Hangfire.PostgreSql;
 
@@ -21,6 +22,7 @@ namespace Bonds.App.Api
             builder.Services.AddApplicationOptions(builder.Configuration);
             builder.Services.AddDataProvider(builder.Configuration);
             builder.Services.AddCoreServices();
+            builder.Services.AddTelegramServices();
             builder.Services.AddTelegram(builder.Configuration);
             builder.Services.AddHangfire(x =>
             {
@@ -35,8 +37,9 @@ namespace Bonds.App.Api
 
             var app = builder.Build();
             app.UseHangfireDashboard();
-
             RegisterJobs(app);
+            using var scope = app.Services.CreateScope();
+            scope.ServiceProvider.GetRequiredService<ITelegramClient>().Receive();
 
             app.Run();
         }

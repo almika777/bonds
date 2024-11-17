@@ -170,6 +170,12 @@ namespace Bonds.Core.Response
         /// Дата расчётов внесистемной сделки или первой части сделки РЕПО
         /// </summary>
         [JsonPropertyName("SETTLEDATE")]
-        public DateTime? SettleDate { get; set; }
+        public DateTime? SettleDate { get; set; }        
+        
+        /// <summary>
+        /// Дата оферты
+        /// </summary>
+        [JsonPropertyName("OFFERDATE")]
+        public DateTime? OfferDate { get; set; }
     }
 }

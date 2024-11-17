@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bonds.Core.Extensions;
 using Bonds.Core.Services.Interfaces;
+using Bonds.Telegram.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace Bonds.Core.Tests.Services

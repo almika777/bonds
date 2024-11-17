@@ -16,23 +16,35 @@ namespace Bonds.Core.Services
             _client = httpClientFactory.CreateClient("moex");
         }
 
-        public async Task<(string ISIN, long? EmmiterId)> GetBondEmitterId(string isin)
+        public async Task<BondsExtendedMarketdataResponse> GetBondExtendedData(string isin)
         {
+            string? GetSecondValueFromStringArray(string? s) 
+                => s == null ? null : JsonSerializer.Deserialize<JsonArray>(s)?[2]?.ToString();
+
             var response = await _client.GetAsync($"securities/{isin}.json");
             var stringResponse = await response.Content.ReadAsStreamAsync();
             var data = await JsonSerializer.DeserializeAsync<Dictionary<string, Dictionary<string, object>>>(stringResponse);
             var rows = JsonSerializer.Deserialize<JsonElement>(data["description"]["data"].ToString()!).EnumerateArray()
                     .Select(z => z.ToString())
                     .ToList();
-            var row = rows.FirstOrDefault(x => x.Contains("emitter_id", StringComparison.InvariantCultureIgnoreCase));
 
-            if (row == null)
-                return (null, null);
+            var emitterRow = rows.FirstOrDefault(x => x.Contains("emitter_id", StringComparison.InvariantCultureIgnoreCase));
+            var nameRow = rows.FirstOrDefault(x => x.Contains("name", StringComparison.InvariantCultureIgnoreCase));
+            var shortNameRow = rows.FirstOrDefault(x => x.Contains("shortname", StringComparison.InvariantCultureIgnoreCase));
 
-            var result = JsonSerializer.Deserialize<JsonArray>(row)?[2]?.ToString();
-            return long.TryParse(result, out var id)
-                ? (isin,id)
-                : (null, null);
+            var shortName = GetSecondValueFromStringArray(shortNameRow);
+            var name = GetSecondValueFromStringArray(nameRow);
+            var emitter = GetSecondValueFromStringArray(emitterRow);
+
+            return new BondsExtendedMarketdataResponse
+            {
+                ISIN = isin,
+                ShortName = shortName,
+                Name = name,
+                EmitterId = long.TryParse(emitter, out var emitterId) 
+                    ? emitterId 
+                    : null,
+            };
         }
 
         // список всех облигаций на мосбирже
@@ -53,6 +65,15 @@ namespace Bonds.Core.Services
             var stringResponse = await response.Content.ReadAsStreamAsync();
             var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
             return MoexResponseDeserializer.DeserializeList<BondsMarketdataResponse>(data["marketdata"].ToString());
+        }        
+        
+        public async Task<List<BondsSecuritiesResponse>> GetAllBondsSecurities()
+        {
+            var response = await _client.GetAsync($"engines/stock/markets/bonds/securities.json?marketprice_board=1");
+
+            var stringResponse = await response.Content.ReadAsStreamAsync();
+            var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
+            return MoexResponseDeserializer.DeserializeList<BondsSecuritiesResponse>(data["securities"].ToString());
         }
 
         //https://iss.moex.com/iss/engines/stock/markets/bonds/securities/{ISIN}/trades

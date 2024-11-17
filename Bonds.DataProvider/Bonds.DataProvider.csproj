@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Bonds.Common\Bonds.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

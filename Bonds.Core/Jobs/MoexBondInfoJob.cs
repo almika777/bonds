@@ -34,18 +34,21 @@ namespace Bonds.Core.Jobs
 
                 await using var context = await _factory.CreateDbContextAsync();
 
-                var moexBonds = (await _moexHttpDataClient.GetAllBondsMarketdata())
+                var moexBonds = (await _moexHttpDataClient.GetAllBondsSecurities())
                     .Select(_mapper.Map<BondEntity>)
                     .ToList();
 
                 var dbBonds = context.Bonds
                     .Select(x => x.ISIN)
+                    .AsNoTracking()
                     .ToHashSet();
 
                 _logger.LogInformation("Обновить: {Count}", moexBonds.Count);
 
                 var (addBonds, updateBonds) = SplitCollection(moexBonds, entity => !dbBonds.Contains(entity.ISIN));
                 await context.Bonds.AddRangeAsync(addBonds);
+                await context.SaveChangesAsync();
+
                 context.Bonds.UpdateRange(updateBonds);
                 await context.SaveChangesAsync();
 

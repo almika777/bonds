@@ -1,11 +1,10 @@
 ﻿using Bonds.Core.Response;
-using Bonds.Core.Results;
 
 namespace Bonds.Core.Services.Interfaces
 {
     public interface IMoexHttpDataClient
     {
-        Task<(string ISIN, long? EmmiterId)> GetBondEmitterId(string isin);
+        Task<BondsExtendedMarketdataResponse> GetBondExtendedData(string isin);
 
         /// <summary>
         /// Список всех облигаций на бирже
@@ -14,6 +13,7 @@ namespace Bonds.Core.Services.Interfaces
         Task<List<BondsSecuritiesResponse>> GetAllBonds();
 
         Task<List<BondsMarketdataResponse>> GetAllBondsMarketdata();
+        Task<List<BondsSecuritiesResponse>> GetAllBondsSecurities();
 
         Task<List<BondsTradeResponse>> GetBondsTrades(string isin);
     }

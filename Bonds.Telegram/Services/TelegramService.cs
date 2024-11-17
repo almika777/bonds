@@ -1,8 +1,8 @@
-﻿using Bonds.Core.Services.Interfaces;
+﻿using Bonds.Telegram.Services.Interfaces;
 using Telegram.BotAPI;
 using Telegram.BotAPI.AvailableMethods;
 
-namespace Bonds.Core.Services
+namespace Bonds.Telegram.Services
 {
     internal class TelegramService : ITelegramService
     {

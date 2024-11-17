@@ -3,6 +3,7 @@ using System;
 using Bonds.DataProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bonds.DataProvider.Migrations
 {
     [DbContext(typeof(BondsContext))]
-    partial class BondsContextModelSnapshot : ModelSnapshot
+    [Migration("20241110193901_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +45,7 @@ namespace Bonds.DataProvider.Migrations
                     b.Property<double?>("CouponPercent")
                         .HasColumnType("double precision");
 
-                    b.Property<int>("CouponPeriod")
+                    b.Property<int?>("CouponPeriod")
                         .HasColumnType("integer");
 
                     b.Property<double?>("CouponValue")
@@ -73,9 +76,6 @@ namespace Bonds.DataProvider.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("NextCouponDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("OfferDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("PrevDate")

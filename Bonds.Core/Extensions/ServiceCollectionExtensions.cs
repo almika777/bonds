@@ -1,5 +1,4 @@
-﻿using Bonds.Core.Jobs;
-using Bonds.Core.Services;
+﻿using Bonds.Core.Services;
 using Bonds.Core.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,8 +17,6 @@ namespace Bonds.Core.Extensions
 
             services.AddSingleton<IMoexHttpDataClient, MoexHttpDataClient>();
             services.AddSingleton<IBondsEventProviderService, BondsEventProviderService>();
-            services.AddSingleton<ITelegramService, TelegramService>();
-            services.AddSingleton<ITelegramMessageService, TelegramMessageService>();
 
             return services;
         }

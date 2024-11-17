@@ -43,10 +43,10 @@ namespace Bonds.Core.Jobs
                 _logger.LogInformation("Количество бумаг: {Count}", dbBonds.Count);
 
                 var isinForRequest = dbBonds.Except(extendedBonds);
-                var bondInfoTasks = isinForRequest.Select(_moexHttpDataClient.GetBondEmitterId);
+                var bondInfoTasks = isinForRequest.Select(_moexHttpDataClient.GetBondExtendedData).ToArray();
                 var bondsInfo = (await Task.WhenAll(bondInfoTasks))
-                    .Where(x => x.EmmiterId != null)
-                    .ToDictionary(x => x.ISIN, x => x.EmmiterId);
+                    .Where(x => x.EmitterId != null)
+                    .ToDictionary(x => x.ISIN);
 
                 _logger.LogInformation("Нашли идентификаторы для {Count} бумаг", bondsInfo.Count);
 
@@ -54,7 +54,10 @@ namespace Bonds.Core.Jobs
                 {
                     UpdatedDate = DateTime.UtcNow,
                     ISIN = x.Key,
-                    EmitterId = x.Value,
+                    EmitterId = x.Value.EmitterId,
+                    Name = x.Value.Name,
+                    ShortName = x.Value.ShortName
+
                 }));
                 await context.SaveChangesAsync();
             }
