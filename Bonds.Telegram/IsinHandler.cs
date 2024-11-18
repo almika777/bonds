@@ -21,6 +21,10 @@ namespace Bonds.Telegram
         {
             var bond = await _context.Bonds.SingleOrDefaultAsync(x => x.ISIN == value);
             var bondExtended = await _context.BondsExtended.SingleOrDefaultAsync(x => x.ISIN == value);
+
+            if (bondExtended != null || bond == null)
+                throw new Exception("Данные ISIN не найден, попробуйте позже");
+
             var emitterBonds = await _context.BondsExtended
                 .Where(x => x.EmitterId == bondExtended!.EmitterId)
                 .Join(_context.Bonds, x => x.ISIN, x => x.ISIN, (x, y) => y)
@@ -32,7 +36,7 @@ namespace Bonds.Telegram
             };
         }
 
-        private string GetMessage(BondEntity bond, List<BondEntity> emitterBonds)
+        private string GetMessage(BondEntity bond, List<BondEntity>? emitterBonds = null)
         {
             var sb = new StringBuilder();
             sb.AppendLine($"Эмитент: {bond.SecName}");
@@ -44,13 +48,17 @@ namespace Bonds.Telegram
 
             sb.AppendLine("Другие бумаги эмитента:");
 
-            foreach (var x in emitterBonds.OrderByDescending(x => x.YieldAtPrevWaPrice))
+            if (emitterBonds != null)
             {
-                sb.AppendLine($"Эмитент: {x.SecName}");
-                sb.AppendLine($"<code>{x.ISIN}</code>: {x.YieldAtPrevWaPrice}%");
-                sb.AppendLine($"Дней до погашения (оферты): {DaysForYieldCalculate(x)}");
-                sb.AppendLine("");
+                foreach (var x in emitterBonds.OrderByDescending(x => x.YieldAtPrevWaPrice))
+                {
+                    sb.AppendLine($"Эмитент: {x.SecName}");
+                    sb.AppendLine($"<code>{x.ISIN}</code>: {x.YieldAtPrevWaPrice}%");
+                    sb.AppendLine($"Дней до погашения (оферты): {DaysForYieldCalculate(x)}");
+                    sb.AppendLine("");
+                }
             }
+
             return sb.ToString();
         }
 
