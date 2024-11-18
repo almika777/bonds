@@ -22,7 +22,7 @@ namespace Bonds.Telegram
             var bond = await _context.Bonds.SingleOrDefaultAsync(x => x.ISIN == value);
             var bondExtended = await _context.BondsExtended.SingleOrDefaultAsync(x => x.ISIN == value);
 
-            if (bondExtended != null || bond == null)
+            if (bondExtended == null || bond == null)
                 throw new Exception("Данные ISIN не найден, попробуйте позже");
 
             var emitterBonds = await _context.BondsExtended
