@@ -6,6 +6,7 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+RUN dotnet dev-certs https --trust
 WORKDIR /src
 COPY ["Bonds.App.Api/Bonds.App.Api.csproj", "Bonds.App.Api/"]
 RUN dotnet restore "Bonds.App.Api/Bonds.App.Api.csproj"
@@ -17,7 +18,7 @@ FROM build AS publish
 RUN dotnet publish "Bonds.App.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
-RUN dotnet dev-certs https --trust
+
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Bonds.App.Api.dll"]
