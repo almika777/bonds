@@ -36,7 +36,10 @@ namespace Bonds.App.Api
             builder.Services.AddJobs();
 
             var app = builder.Build();
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire",new DashboardOptions
+            {
+                IgnoreAntiforgeryToken = true
+            });
             RegisterJobs(app);
             using var scope = app.Services.CreateScope();
             scope.ServiceProvider.GetRequiredService<ITelegramClient>().Receive();
