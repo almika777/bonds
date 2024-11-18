@@ -7,7 +7,6 @@ using Bonds.DataProvider.Extensions;
 using Bonds.Telegram.Extensions;
 using Bonds.Telegram.Services.Interfaces;
 using Hangfire;
-using Hangfire.Dashboard;
 using Hangfire.PostgreSql;
 
 namespace Bonds.App.Api
