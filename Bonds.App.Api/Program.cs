@@ -37,7 +37,11 @@ namespace Bonds.App.Api
             builder.Services.AddControllers();
 
             var app = builder.Build();
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                IgnoreAntiforgeryToken = true,
+                DarkModeEnabled = true,
+            });
             app.MapControllers();
             RegisterJobs(app);
             using var scope = app.Services.CreateScope();
