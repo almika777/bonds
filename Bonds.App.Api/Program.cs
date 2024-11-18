@@ -1,4 +1,5 @@
 using Bonds.App.Api.Extensions;
+using Bonds.App.Api.Filters;
 using Bonds.Common.Options;
 using Bonds.Core.Extensions;
 using Bonds.Core.Jobs;
@@ -7,6 +8,7 @@ using Bonds.DataProvider.Extensions;
 using Bonds.Telegram.Extensions;
 using Bonds.Telegram.Services.Interfaces;
 using Hangfire;
+using Hangfire.Dashboard;
 using Hangfire.PostgreSql;
 
 namespace Bonds.App.Api
@@ -39,6 +41,11 @@ namespace Bonds.App.Api
             var app = builder.Build();
             app.UseHangfireDashboard("/hangfire", new DashboardOptions
             {
+                Authorization = new[]
+                {
+                    new HangfireAuthFilter()
+
+                },
                 IgnoreAntiforgeryToken = true,
                 DarkModeEnabled = true,
             });
