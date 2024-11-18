@@ -7,6 +7,7 @@ using Bonds.DataProvider.Extensions;
 using Bonds.Telegram.Extensions;
 using Bonds.Telegram.Services.Interfaces;
 using Hangfire;
+using Hangfire.Dashboard;
 using Hangfire.PostgreSql;
 
 namespace Bonds.App.Api
@@ -34,12 +35,11 @@ namespace Bonds.App.Api
             builder.Services.AddMemoryCache();
             builder.Services.AddAutoMapper(typeof(SimpleMapper));
             builder.Services.AddJobs();
+            builder.Services.AddControllers();
 
             var app = builder.Build();
-            app.UseHangfireDashboard("/hangfire",new DashboardOptions
-            {
-                IgnoreAntiforgeryToken = true
-            });
+            app.UseHangfireDashboard();
+            app.MapControllers();
             RegisterJobs(app);
             using var scope = app.Services.CreateScope();
             scope.ServiceProvider.GetRequiredService<ITelegramClient>().Receive();

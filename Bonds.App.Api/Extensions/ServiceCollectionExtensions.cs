@@ -8,6 +8,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddJobs(this IServiceCollection services)
     {
         services.AddSingleton<IJob, MoexBondInfoJob>();
+        services.AddSingleton<IJob, MoexExtendedBondInfoJob>();
         return services;
     }
 
