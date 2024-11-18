@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Bonds.Core.Helpers
@@ -38,7 +39,7 @@ namespace Bonds.Core.Helpers
                     var convertType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
                     var value = GetValue(stringValue, convertType);
 
-                    propertyInfo.SetValue(entity, value);
+                     propertyInfo.SetValue(entity, value);
                 }
 
                 splitedData.Clear();
@@ -57,7 +58,7 @@ namespace Bonds.Core.Helpers
                 return convertType switch
                 {
                     not null when convertType == typeof(string) => stringValue,
-                    not null when convertType == typeof(double) => Convert.ToDouble(stringValue.Replace(".", ",")),
+                    not null when convertType == typeof(double) => Convert.ToDouble(stringValue, CultureInfo.InvariantCulture),
                     not null when convertType == typeof(int) => Convert.ToInt32(stringValue),
                     not null when convertType == typeof(long) => Convert.ToInt64(stringValue),
                     not null when convertType == typeof(bool) => stringValue.Equals("A"),

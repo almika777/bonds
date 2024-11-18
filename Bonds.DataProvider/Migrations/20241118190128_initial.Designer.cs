@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bonds.DataProvider.Migrations
 {
     [DbContext(typeof(BondsContext))]
-    [Migration("20241118183606_float")]
-    partial class @float
+    [Migration("20241118190128_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
