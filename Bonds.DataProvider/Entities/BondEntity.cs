@@ -26,17 +26,17 @@ namespace Bonds.DataProvider.Entities
         /// <summary>
         /// Значение оценки предыдущего торгового дня
         /// </summary>
-        public double? PrevWaPrice { get; set; }
+        public float? PrevWaPrice { get; set; }
 
         /// <summary>
         /// Доходность по оценке предыдущего торгового дня
         /// </summary>
-        public double? YieldAtPrevWaPrice { get; set; }
+        public float? YieldAtPrevWaPrice { get; set; }
 
         /// <summary>
         /// Величина купона, выраженная в руб
         /// </summary>
-        public double? CouponValue { get; set; }
+        public float? CouponValue { get; set; }
 
         /// <summary>
         /// Дата окончания купона
@@ -46,7 +46,7 @@ namespace Bonds.DataProvider.Entities
         /// <summary>
         /// Цена последней сделки предыдущего торгового дня
         /// </summary>
-        public double? PrevPrice { get; set; }
+        public float? PrevPrice { get; set; }
 
         /// <summary>
         /// Количество ценных бумаг в одном стандартном лоте
@@ -56,7 +56,7 @@ namespace Bonds.DataProvider.Entities
         /// <summary>
         /// Номинальная стоимость одной ценной бумаги, в валюте инструмента
         /// </summary>
-        public double? FaceValue { get; set; }
+        public float? FaceValue { get; set; }
 
         /// <summary>
         /// Наименование режима
@@ -86,7 +86,7 @@ namespace Bonds.DataProvider.Entities
         /// <summary>
         /// Цена закрытия предыдущего дня
         /// </summary>
-        public double? PrevLegalClosePrice { get; set; }
+        public float? PrevLegalClosePrice { get; set; }
 
         /// <summary>
         /// Дата предыдущего торгового дня
@@ -141,7 +141,7 @@ namespace Bonds.DataProvider.Entities
         /// <summary>
         /// Ставка купона, %
         /// </summary>
-        public double? CouponPercent { get; set; }
+        public float? CouponPercent { get; set; }
 
         /// <summary>
         /// Дата расчётов внесистемной сделки или первой части сделки РЕПО
