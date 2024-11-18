@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: Bonds.App.Api/Dockerfile
+    ports:
+      - "7195:7195"
     environment:
       - ConnectionStrings__Bonds=Server=postgres;Port=5432;User Id=admin;Password=admin;Database=bonds;
 
