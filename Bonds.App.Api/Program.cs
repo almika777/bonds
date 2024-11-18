@@ -39,6 +39,8 @@ namespace Bonds.App.Api
 
             var app = builder.Build();
             app.UseHangfireDashboard();
+            app.UseHttpsRedirection();
+            app.UseHsts();
             app.MapControllers();
             RegisterJobs(app);
             using var scope = app.Services.CreateScope();
