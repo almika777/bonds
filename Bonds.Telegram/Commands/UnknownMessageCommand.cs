@@ -4,7 +4,7 @@ namespace Bonds.Telegram.Commands
 {
     public class UnknownMessageCommand : IMessageCommandHandler
     {
-        public Task<Message> Handle(string value)
+        public Task<Message> Handle(Message message)
         {
             return Task.FromResult(new Message
             {

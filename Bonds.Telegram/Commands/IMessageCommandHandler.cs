@@ -4,6 +4,6 @@ namespace Bonds.Telegram.Commands
 {
     public interface IMessageCommandHandler
     {
-        Task<Message> Handle(string value);
+        Task<Message> Handle(Message message);
     }
 }

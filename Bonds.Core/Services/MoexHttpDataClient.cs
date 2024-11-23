@@ -3,7 +3,6 @@ using Bonds.Core.Response;
 using Bonds.Core.Services.Interfaces;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Bonds.Core.Results;
 
 namespace Bonds.Core.Services
 {
@@ -65,6 +64,17 @@ namespace Bonds.Core.Services
             var stringResponse = await response.Content.ReadAsStreamAsync();
             var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
             return MoexResponseDeserializer.DeserializeList<BondsMarketdataResponse>(data["marketdata"].ToString());
+        }          
+        
+        // список всех облигаций на мосбирже XS0114288789
+        public async Task<(List<BondsMarketdataResponse>, List<BondsSecuritiesResponse>)> GetAllBondsMarketdataAndSecurity()
+        {
+            var response = await _client.GetAsync($"engines/stock/markets/bonds/securities.json?marketprice_board=1");
+
+            var stringResponse = await response.Content.ReadAsStreamAsync();
+            var data = await JsonSerializer.DeserializeAsync<Dictionary<string, object>>(stringResponse);
+            return (MoexResponseDeserializer.DeserializeList<BondsMarketdataResponse>(data["marketdata"].ToString()),
+                MoexResponseDeserializer.DeserializeList<BondsSecuritiesResponse>(data["securities"].ToString()));
         }        
         
         public async Task<List<BondsSecuritiesResponse>> GetAllBondsSecurities()

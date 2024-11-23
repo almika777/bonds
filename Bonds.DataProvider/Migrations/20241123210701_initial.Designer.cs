@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bonds.DataProvider.Migrations
 {
     [DbContext(typeof(BondsContext))]
-    [Migration("20241118190128_initial")]
+    [Migration("20241123210701_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -25,7 +25,29 @@ namespace Bonds.DataProvider.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Bonds.DataProvider.Entities.BondEntity", b =>
+            modelBuilder.Entity("Bonds.DataProvider.Entities.BondExtendedEntity", b =>
+                {
+                    b.Property<string>("ISIN")
+                        .HasColumnType("text");
+
+                    b.Property<long?>("EmitterId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("ISIN");
+
+                    b.ToTable("BondsExtended");
+                });
+
+            modelBuilder.Entity("Bonds.DataProvider.Entities.BondSecurityEntity", b =>
                 {
                     b.Property<string>("ISIN")
                         .HasColumnType("text");
@@ -122,29 +144,92 @@ namespace Bonds.DataProvider.Migrations
 
                     b.HasKey("ISIN");
 
-                    b.ToTable("Bonds");
+                    b.ToTable("BondsSecurities");
                 });
 
-            modelBuilder.Entity("Bonds.DataProvider.Entities.BondExtendedEntity", b =>
+            modelBuilder.Entity("Bonds.DataProvider.Entities.BondsMarketdataEntity", b =>
                 {
                     b.Property<string>("ISIN")
                         .HasColumnType("text");
 
-                    b.Property<long?>("EmitterId")
+                    b.Property<double?>("Ask")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Bid")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Change")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("CouponValue")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("CurrentPrice")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("High")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Last")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Low")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("MarketPrice")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("MarketPriceToday")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Open")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("PriceMinusPrevWaPrice")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Qty")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("SeqNum")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Spread")
+                        .HasColumnType("double precision");
+
+                    b.Property<long>("TradesCount")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ShortName")
-                        .HasColumnType("text");
+                    b.Property<TimeSpan>("UpdateTime")
+                        .HasColumnType("interval");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<long>("ValToday")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("double precision");
+
+                    b.Property<long>("VolToday")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("WaPrice")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Yield")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("YieldAtWaPrice")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("YieldLastCoupon")
+                        .HasColumnType("double precision");
+
                     b.HasKey("ISIN");
 
-                    b.ToTable("BondsExtended");
+                    b.ToTable("BondsMarketdata");
                 });
 #pragma warning restore 612, 618
         }

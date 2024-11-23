@@ -16,6 +16,7 @@ namespace Bonds.Telegram.Services
         {
             return command switch
             {
+                "/start" => _handlers[typeof(StartMessageCommand)],
                 _ => _handlers[typeof(UnknownMessageCommand)]
             };
         }

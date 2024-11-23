@@ -2,7 +2,7 @@
 
 namespace Bonds.Core.Response
 {
-    public class BondsSecuritiesResponse
+    public record BondsSecuritiesResponse
     {
         /// <summary>
         /// Международный идентификационный код ценной бумаги

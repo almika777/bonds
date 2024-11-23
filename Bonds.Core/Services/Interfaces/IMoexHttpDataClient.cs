@@ -14,7 +14,8 @@ namespace Bonds.Core.Services.Interfaces
 
         Task<List<BondsMarketdataResponse>> GetAllBondsMarketdata();
         Task<List<BondsSecuritiesResponse>> GetAllBondsSecurities();
-
+        Task<(List<BondsMarketdataResponse> Marketdata, List<BondsSecuritiesResponse> Securities)> 
+            GetAllBondsMarketdataAndSecurity();
         Task<List<BondsTradeResponse>> GetBondsTrades(string isin);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Bonds.Core.Response;
 using Bonds.Core.Services.Interfaces;
 using Bonds.DataProvider;
 using Bonds.DataProvider.Entities;
@@ -30,27 +31,19 @@ namespace Bonds.Core.Jobs
         {
             try
             {
-                _logger.LogInformation("Забираем данные с МОЕХ: {Date}", DateTime.UtcNow);
+                _logger.LogInformation("Забираем данные (MARKETDATA) с МОЕХ: {Date}", DateTime.UtcNow);
 
                 await using var context = await _factory.CreateDbContextAsync();
 
-                var moexBonds = (await _moexHttpDataClient.GetAllBondsSecurities())
-                    .Select(_mapper.Map<BondEntity>)
-                    .ToList();
+                var moex = await _moexHttpDataClient.GetAllBondsMarketdataAndSecurity();
 
-                var dbBonds = context.Bonds
-                    .Select(x => x.ISIN)
-                    .AsNoTracking()
-                    .ToHashSet();
-
-                _logger.LogInformation("Обновить: {Count}", moexBonds.Count);
-
-                var (addBonds, updateBonds) = SplitCollection(moexBonds, entity => !dbBonds.Contains(entity.ISIN));
-                await context.Bonds.AddRangeAsync(addBonds);
-                await context.SaveChangesAsync();
-
-                context.Bonds.UpdateRange(updateBonds);
-                await context.SaveChangesAsync();
+                await UpdateBonds<BondsMarketdataResponse, BondsMarketdataEntity>(
+                    moex.Marketdata, 
+                    context);                
+                
+                await UpdateBonds<BondsSecuritiesResponse, BondSecurityEntity>(
+                    moex.Securities, 
+                    context);
 
                 _logger.LogInformation("Сохранили: {Date}", DateTime.UtcNow);
             }
@@ -58,6 +51,27 @@ namespace Bonds.Core.Jobs
             {
                 _logger.LogError(e, e.Message);
             }
+        }
+
+        private async Task UpdateBonds<T,TK>(
+            IEnumerable<T> marketdatas, 
+            DbContext context) where TK : class, IBondEntity
+        {
+            var marketdata = marketdatas
+                .Select(x => _mapper.Map<TK>(x))
+                .ToList();
+
+            var dbMarketdataBonds = context.Set<TK>()
+                .Select(x => x.ISIN)
+                .AsNoTracking()
+                .ToHashSet();
+
+            var (addBonds, updateBonds) = SplitCollection(marketdata, entity => !dbMarketdataBonds.Contains(entity.ISIN));
+            await context.Set<TK>().AddRangeAsync(addBonds);
+            await context.SaveChangesAsync();
+
+            context.Set<TK>().UpdateRange(updateBonds);
+            await context.SaveChangesAsync();
         }
 
         private (IEnumerable<T>, IEnumerable<T>) SplitCollection<T>(IEnumerable<T> source, Func<T, bool> filter)

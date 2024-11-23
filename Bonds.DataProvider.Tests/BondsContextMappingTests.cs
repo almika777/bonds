@@ -11,16 +11,16 @@ namespace Bonds.DataProvider.Tests
         public async Task BondsEntity()
         {
             var now = DateTime.UtcNow;
-            var bond = new BondEntity
+            var bond = new BondSecurityEntity
             {
                 ISIN = "ISIN",
 
             };
 
-            await Database.Bonds.AddAsync(bond);
+            await Database.BondsSecurities.AddAsync(bond);
             await Database.SaveChangesAsync();
 
-            var res = await Database.Bonds.ToListAsync();
+            var res = await Database.BondsSecurities.ToListAsync();
 
             res.Should().NotBeNullOrEmpty();
             res.Count.Should().Be(1);
