@@ -31,7 +31,7 @@ namespace Bonds.Telegram.Services
             await (update switch
             {
                 { Message: { } message } => OnMessage(message),
-                { EditedMessage: { } message } => OnMessage(message),
+                //{ EditedMessage: { } message } => OnMessage(message),
                 _ => UnknownUpdateHandlerAsync(update)
             });
         }
@@ -51,9 +51,8 @@ namespace Bonds.Telegram.Services
                 }
                 var split = messageText.Split(' ');
                 var command = split[0];
-                var value = split[1];
-                var message = await _messageCommandFactory.Handler(command).Handle(value)!;
-                await _telegramBot.SendMessageAsync(msg.Chat.Id, ReplaceSigns(message.Text), parseMode:FormatStyles.HTML);
+                var message = await _messageCommandFactory.Handler(command).Handle(msg);
+                await _telegramBot.SendMessageAsync(msg.Chat.Id, message.Text, parseMode:FormatStyles.HTML);
             }
             catch (Exception e)
             {
@@ -70,12 +69,6 @@ namespace Bonds.Telegram.Services
             await _telegramBot.SendMessageAsync(msg.Chat.Id, message.Text, parseMode: FormatStyles.HTML);
         }
 
-        private string ReplaceSigns(string? text)
-        {
-            return text?
-                       .Replace("-", "\\-")
-                       .Replace(".","\\.") ?? string.Empty;
-        }
         private Task UnknownUpdateHandlerAsync(Update update)
         {
             _logger.LogInformation("Unknown update type: {Update}", update);

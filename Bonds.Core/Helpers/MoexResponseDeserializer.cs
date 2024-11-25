@@ -64,6 +64,7 @@ namespace Bonds.Core.Helpers
                     not null when convertType == typeof(bool) => stringValue.Equals("A"),
                     not null when convertType == typeof(DateTime) => GetDate(stringValue),
                     not null when convertType == typeof(DateTimeOffset) => GetDateOffset(stringValue),
+                    not null when convertType == typeof(TimeSpan) => Timespan(stringValue),
                     _ => throw new Exception()
                 };
             }
@@ -73,11 +74,12 @@ namespace Bonds.Core.Helpers
                 throw;
             }
 
-
             object? GetDateOffset(string stringValue)
                 => DateTimeOffset.TryParse(stringValue, out var date) ? date : null;
             object? GetDate(string stringValue)
-                => DateTime.TryParse(stringValue, out var date) ? date : null;
+                => DateTime.TryParse(stringValue, out var date) ? date : null;            
+            object? Timespan(string stringValue)
+                => TimeSpan.TryParse(stringValue, out var date) ? date : null;
         }
     }
 }

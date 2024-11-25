@@ -30,7 +30,7 @@ namespace Bonds.Core.Jobs
 
                 await using var context = await _factory.CreateDbContextAsync();
 
-                var dbBonds = await context.Bonds
+                var dbBonds = await context.BondsMarketdata
                     .Select(x => x.ISIN)
                     .AsNoTracking()
                     .ToListAsync();

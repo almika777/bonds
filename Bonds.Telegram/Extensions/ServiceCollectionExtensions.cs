@@ -20,7 +20,8 @@ namespace Bonds.Telegram.Extensions
         private static void AddCommands(this IServiceCollection services)
         {
             services.AddScoped<IIsinHandler, IsinHandler>();
-            services.AddScoped<IMessageCommandHandler, UnknownMessageCommand>();
+            services.AddSingleton<IMessageCommandHandler, UnknownMessageCommand>();
+            services.AddSingleton<IMessageCommandHandler, StartMessageCommand>();
         }
     }
 }

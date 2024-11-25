@@ -5,7 +5,8 @@ namespace Bonds.DataProvider
 {
     public class BondsContext : DbContext
     {
-        public DbSet<BondEntity> Bonds { get; set; }
+        public DbSet<BondSecurityEntity> BondsSecurities { get; set; }
+        public DbSet<BondsMarketdataEntity> BondsMarketdata { get; set; }
         public DbSet<BondExtendedEntity> BondsExtended { get; set; }
 
         public BondsContext(DbContextOptions<BondsContext> options) : base(options)

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bonds.DataProvider.Entities
 {
-    public class BondEntity
+    public class BondSecurityEntity : IBondEntity
     {
 
         /// <summary>

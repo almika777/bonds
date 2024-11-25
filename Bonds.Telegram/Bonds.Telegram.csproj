@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bonds.Core\Bonds.Core.csproj" />
     <ProjectReference Include="..\Bonds.DataProvider\Bonds.DataProvider.csproj" />
   </ItemGroup>
 
