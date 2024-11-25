@@ -26,11 +26,11 @@ namespace Bonds.Core.Jobs
         {
             try
             {
-/*                _logger.LogInformation("Собираем идентификаторы эмитентов: {Date}", DateTime.UtcNow);
+                _logger.LogInformation("Собираем идентификаторы эмитентов: {Date}", DateTime.UtcNow);
 
                 await using var context = await _factory.CreateDbContextAsync();
 
-                var dbBonds = await context.Bonds
+                var dbBonds = await context.BondsMarketdata
                     .Select(x => x.ISIN)
                     .AsNoTracking()
                     .ToListAsync();
@@ -59,7 +59,7 @@ namespace Bonds.Core.Jobs
                     ShortName = x.Value.ShortName
 
                 }));
-                await context.SaveChangesAsync();*/
+                await context.SaveChangesAsync();
             }
             catch (Exception e)
             {

@@ -60,12 +60,12 @@ namespace Bonds.Telegram
             var sb = new StringBuilder();
             sb.AppendLine($"Эмитент: {bond.Security.SecName}");
             sb.AppendLine($"<a href=\"{GlobalConstants.MoexSiteBondUrl(bond.Extended.ISIN)}\">{bond.Extended.ISIN}</a>");
-            sb.AppendLine($"Доходность: {bond.Marketdata.YieldAtWaPrice}");
-            sb.AppendLine($"Текущая цена: {bond.Marketdata.CurrentPrice}");
-            sb.AppendLine($"Изменения за день: {bond.Marketdata.PriceMinusPrevWaPrice}");
+            sb.AppendLine($"Доходность: {bond.Marketdata.YieldAtWaPrice}%");
+            sb.AppendLine($"Текущая цена: {bond.Marketdata.CurrentPrice}%");
+            sb.AppendLine($"Изменения за день: {bond.Marketdata.PriceMinusPrevWaPrice} {PlusOrMinus(bond)}%");
             sb.AppendLine($"Дней до погашения или оферты: {DaysForYieldCalculate(bond.Security)}");
-            sb.AppendLine($"Купонов в месяц: {365 / bond.Security.CouponPeriod}");
             sb.AppendLine($"Флоатер (возможно): {Floater(bond.Security)}");
+            sb.AppendLine($"Актуально на: {bond.Marketdata.UpdateTime} 🕐");
             sb.AppendLine("");
 
             sb.AppendLine("Другие бумаги эмитента:");
@@ -76,14 +76,24 @@ namespace Bonds.Telegram
                 {
                     sb.AppendLine($"Эмитент: {bond.Security.SecName}");
                     sb.AppendLine($"<code>{x.Security.ISIN}</code>: {x.Marketdata.YieldAtWaPrice}%");
-                    sb.AppendLine($"Дней до погашения (оферты): {DaysForYieldCalculate(x.Security)}");
+                    sb.AppendLine($"Изменения за день: {x.Marketdata.PriceMinusPrevWaPrice} {PlusOrMinus(x)}%");
+                    sb.AppendLine($"Дней до погашения или оферты: {DaysForYieldCalculate(x.Security)}");
                     sb.AppendLine("");
                 }
             }
 
-            sb.AppendLine($"🕐 Актуально на: {bond.Marketdata.UpdateTime}");
-
             return sb.ToString();
+        }
+
+        private static string PlusOrMinus(BondFull bond)
+        {
+            if (bond.Marketdata.PriceMinusPrevWaPrice == 0)
+                return "🟡";//желтый
+
+            return bond.Marketdata.PriceMinusPrevWaPrice > 0
+                ? "🟢" //зеленый
+                : "🔴"; //красный;
+
         }
 
         private string DaysForYieldCalculate(BondSecurityEntity bond)
