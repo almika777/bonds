@@ -59,9 +59,10 @@ namespace Bonds.Telegram
         {
             var sb = new StringBuilder();
             sb.AppendLine($"Эмитент: {bond.Security.SecName}");
-            sb.AppendLine($"<a href=\"{GlobalConstants.MoexSiteBondUrl(bond.Extended.ISIN)}\">{bond.Extended.ISIN}</a>");
+            sb.AppendLine($"<a href='{GlobalConstants.MoexSiteBondUrl(bond.Extended.ISIN)}'>{bond.Extended.ISIN}</a>");
             sb.AppendLine($"Доходность: {bond.Marketdata.YieldAtWaPrice}%");
             sb.AppendLine($"Текущая цена: {bond.Marketdata.CurrentPrice}%");
+            sb.AppendLine($"Купон: {bond.Security.CouponPercent}%");
             sb.AppendLine($"Изменения за день: {bond.Marketdata.PriceMinusPrevWaPrice} {PlusOrMinus(bond)}%");
             sb.AppendLine($"Дней до погашения или оферты: {DaysForYieldCalculate(bond.Security)}");
             sb.AppendLine($"Флоатер (возможно): {Floater(bond.Security)}");
@@ -69,19 +70,20 @@ namespace Bonds.Telegram
             sb.AppendLine("");
 
             sb.AppendLine("Другие бумаги эмитента:");
-
+            sb.AppendLine("<blockquote expandable>");
             if (emitterBonds != null)
             {
                 foreach (var x in emitterBonds)
                 {
-                    sb.AppendLine($"Эмитент: {bond.Security.SecName}");
+                    sb.AppendLine($"Эмитент: {x.Security.SecName}");
                     sb.AppendLine($"<code>{x.Security.ISIN}</code>: {x.Marketdata.YieldAtWaPrice}%");
+                    sb.AppendLine($"Купон: {x.Security.CouponPercent}%");
                     sb.AppendLine($"Изменения за день: {x.Marketdata.PriceMinusPrevWaPrice} {PlusOrMinus(x)}%");
                     sb.AppendLine($"Дней до погашения или оферты: {DaysForYieldCalculate(x.Security)}");
                     sb.AppendLine("");
                 }
             }
-
+            sb.AppendLine("</blockquote>");
             return sb.ToString();
         }
 

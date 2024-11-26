@@ -2,10 +2,7 @@ version: '3.4'
 
 services:
   bonds.app.api:
-    image: ${DOCKER_REGISTRY-}bondsappapi
-    build:
-      context: .
-      dockerfile: Bonds.App.Api/Dockerfile
+    image: almirok/bonds:latest
     ports:
       - "5000:80"
     environment:

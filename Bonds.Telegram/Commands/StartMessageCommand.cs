@@ -16,6 +16,7 @@ namespace Bonds.Telegram.Commands
             sb.AppendLine(" - ISIN");
             sb.AppendLine(" - Доходность");
             sb.AppendLine(" - Текущая цена (%)");
+            sb.AppendLine(" - Купон (%)");
             sb.AppendLine(" - Изменение за день (%)");
             sb.AppendLine(" - Дней до погашения или оферты");
             sb.AppendLine(" - Флоатер ли бумага");

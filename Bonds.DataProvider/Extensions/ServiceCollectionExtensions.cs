@@ -13,6 +13,7 @@ namespace Bonds.DataProvider.Extensions
             services.AddDbContextFactory<BondsContext>(x =>
             {
                 x.UseNpgsql(config.GetConnectionString("Bonds"));
+                x.EnableSensitiveDataLogging();
             });
             return services;
         }
